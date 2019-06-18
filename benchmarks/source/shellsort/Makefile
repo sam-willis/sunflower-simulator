@@ -22,7 +22,7 @@ OBJS	=\
 	$(PROGRAM).o\
 
 
-all:	$(PROGRAM) $(PROGRAM).sr
+all:	$(PROGRAM) $(PROGRAM).sr $(PROGRAM).stabs
 
 $(PROGRAM): $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -l$(LIBOS)-$(TARGET) -o $@ -lgcc
@@ -32,6 +32,11 @@ $(PROGRAM).sr:$(PROGRAM)
 
 $(PROGRAM).o: $(PROGRAM).c $(PROGRAM)-input.h Makefile
 	$(CC) $(CFLAGS) $(OPTFLAGS) $(INCLUDES) -c $(PROGRAM).c
+
+$(PROGRAM).stabs: $(PROGRAM)
+	$(OBJCOPY) --only-keep-debug $? $@; \
+	$(STRIP) --strip-debug --strip-unneeded $?; \
+	$(OBJCOPY) --add-gnu-debuglink=$@ $?
 
 misc.o: ../port/misc.c Makefile
 	$(CC) $(CFLAGS) $(OPTFLAGS) $(INCLUDES) -c ../port/misc.c
@@ -46,7 +51,7 @@ init.o: init.S
 #	$(DATA2ARRAY) $(INPUT) bsort_input > $(PROGRAM)-input.h
 
 clean:
-	$(RM) init.i *.o $(PROGRAM) $(PROGRAM).sr $(PROGRAM).map # $(PROGRAM)-input.h
+	$(RM) init.i *.o $(PROGRAM) $(PROGRAM).sr $(PROGRAM).map $(PROGRAM).stabs # $(PROGRAM)-input.h
 
 install: all
 	cp $(PROGRAM).sr ../../../

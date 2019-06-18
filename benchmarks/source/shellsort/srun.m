@@ -4,6 +4,9 @@ setmemrlatency 100
 setmemwlatency 100
 cacheoff
 --cacheinit 1024 16 1
+
 srecl		ssort.sr
+registerstabs ssort.stabs
+
 run
 on
