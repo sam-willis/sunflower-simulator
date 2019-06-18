@@ -34,9 +34,7 @@ $(PROGRAM).o: $(PROGRAM).c $(PROGRAM)-input.h Makefile
 	$(CC) $(CFLAGS) $(OPTFLAGS) $(INCLUDES) -c $(PROGRAM).c
 
 $(PROGRAM).stabs: $(PROGRAM)
-	$(OBJCOPY) --only-keep-debug $? $@; \
-	$(STRIP) --strip-debug --strip-unneeded $?; \
-	$(OBJCOPY) --add-gnu-debuglink=$@ $?
+	$(OBJDUMP) --stabs $? > $@
 
 misc.o: ../port/misc.c Makefile
 	$(CC) $(CFLAGS) $(OPTFLAGS) $(INCLUDES) -c ../port/misc.c

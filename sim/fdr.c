@@ -1,9 +1,9 @@
 /*
 	Copyright (c) 1999-2008, Phillip Stanley-Marbell (author)
- 
+
 	All rights reserved.
 
-	Redistribution and use in source and binary forms, with or without 
+	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions
 	are met:
 
@@ -18,20 +18,20 @@
 
 	*	Neither the name of the author nor the names of its
 		contributors may be used to endorse or promote products
-		derived from this software without specific prior written 
+		derived from this software without specific prior written
 		permission.
 
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 	"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 	LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
 	COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
 	INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-	BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+	BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-	LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+	LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
 
@@ -48,10 +48,10 @@
 /*	will confuse fdr.							*/
 /*										*/
 /*	If a frame offset or register is used by the compiler for other		*/
-/*	purposes in addition to the storage for a variable as known by the	*/
+/*	purposes in addition to the storage of a variable as known by the	*/
 /*	STABS information, we currently do not have a way to distinguish	*/
-/*	the authentic values which are those fo the variable, from the		*/
-/*	values of other uses of the address or register A possible heuristic	*/
+/*	the authentic values which are those of the variable, from the		*/
+/*	values of other uses of the address or register. A possible heuristic	*/
 /*	is to check if the value looks like a valid code / data address,	*/
 /*	and if the variable is not a pointer, ignore it.			*/
 /*										*/
@@ -107,7 +107,7 @@ enum
 };
 
 /*
-	TODO: currently only do enough to support pdist analysis on pointers 
+	TODO: currently only do enough to support pdist analysis on pointers
 	and non-aggregate data types.
 */
 
@@ -283,7 +283,6 @@ parse_stabstr(Engine *E, State *S, char *stabstr, char **name, int *descrtype, T
 
 	if (stabstr == NULL || strlen(stabstr) < 1)
 	{
-		
 		*descrtype = -1;
 		return;
 	}
@@ -539,12 +538,10 @@ m_readstabs(Engine *E, State *S, char *filename)
 	Stab	stab;
 	ulong	fnaddr = -1;
 	int	scopedepth = 0;
-	
+
 	/*	+3 for the " *\0"	*/
 	char	vdefn[MAX_STAB_TYPENAMELEN+1], *t = NULL;
 	int	size;
-
-
 
 	stab.name = (char *)mmalloc(E, MAX_STAB_VARNAMELEN, "(char *)stab.name in m_readstabs()");
 	if (stab.name == NULL)
@@ -579,7 +576,7 @@ m_readstabs(Engine *E, State *S, char *filename)
 		/*	munch till end.				*/
 		/*						*/
 		if ((strlen(line) > 0) && (line[strlen(line)-1] != '\n'))
-		{		
+		{
 			fscanf(fp, "%*s\n");
 		}
 
@@ -669,7 +666,7 @@ m_readstabs(Engine *E, State *S, char *filename)
 			}
 			msnprint(vdefn, MAX_STAB_TYPENAMELEN, "%s %s %s",
 				t, (stab.type.ispointer ? "*" : ""), stab.name);
-		
+
 			m_addvaluetrace(E, S, vdefn, 0, size, 1, fnaddr, stab.nvalue, stab.type.ispointer);
 		}
 		else if (!strcmp(stab.ntype, "GSYM"))
@@ -682,7 +679,7 @@ m_readstabs(Engine *E, State *S, char *filename)
 
 			printf("Global variable \"%s\" in global scope, typename \"%s\",\tptr=%d\n",
 				stab.name, lookuptype(stab.type.a, stab.type.b), stab.type.ispointer);
-		
+
 			/*								*/
 			/*	For global vars, must get address from Map file		*/
 			/*								*/
