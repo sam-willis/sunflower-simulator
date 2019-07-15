@@ -812,7 +812,7 @@ superHresetcpu(Engine *E, State *S)
 	S->startclk = 0;
 	S->finishclk = 0;
 	
-	S->step = superHstep;
+	/* S->step = superHfaststep; */
 	S->pipelined = 1;
 	S->pipeshow = 0;
 
